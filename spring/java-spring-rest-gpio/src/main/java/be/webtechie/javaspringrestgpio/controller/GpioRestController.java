@@ -100,6 +100,11 @@ public class GpioRestController {
             return ex.getMessage();
         }
     }
+    
+    @GetMapping(path = "toggle/2")
+    public boolean togglePin2() {
+        return this.gpioManager.togglePin((int) 2);
+    }
 
     /**
      * Set the state of a pin.
