@@ -1,5 +1,6 @@
 package be.webtechie.javaspringrest.controller;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -120,10 +121,15 @@ public class ImageController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        // Get the file as a byte array.
-        byte[] media = null;
-        try (InputStream in = new FileInputStream(file)) {
-            media = in.readAllBytes();
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        int nRead;
+        byte[] media = new byte[1024];
+        try {
+        	InputStream in = new FileInputStream(file); 
+            //media = in.readAllBytes(); 
+            while ((nRead = in.read(media, 0, media.length)) != -1) {
+                buffer.write(media, 0, nRead);
+            }
         } catch (IOException ex) {
             // Oops something went wrong, return error 500.
             headers.setContentType(MediaType.TEXT_PLAIN);
